@@ -8,10 +8,26 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 const AuthForm = () => {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleAuth = () => {
+    if (!inputs.email || !inputs.password) {
+      alert("Email and Password are required");
+      return;
+    }
+    navigate("/");
+  };
+
   return (
     <>
       <Box border={"1px solid gray"} borderRadius={4} padding={5}>
@@ -19,17 +35,39 @@ const AuthForm = () => {
           <Text fontSize={40} fontWeight={600}>
             subtleSocial
           </Text>
-          <Input placeholder="Email" type="email" fontSize={14} />
-          <Input placeholder="Password" type="password" fontSize={14} />
+          <Input
+            placeholder="Email"
+            type="email"
+            fontSize={14}
+            value={inputs.email}
+            onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
+          />
+          <Input
+            placeholder="Password"
+            type="password"
+            fontSize={14}
+            value={inputs.password}
+            onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
+          />
 
           {!isLogin ? (
             <Input
               placeholder="Confirm Password"
               type="password"
               fontSize={14}
+              value={inputs.confirmPassword}
+              onChange={(e) =>
+                setInputs({ ...inputs, confirmPassword: e.target.value })
+              }
             />
           ) : null}
-          <Button w={"full"} colorScheme="blue" size={"sm"} fontSize={14}>
+          <Button
+            w={"full"}
+            colorScheme="blue"
+            size={"sm"}
+            fontSize={14}
+            onClick={handleAuth}
+          >
             {isLogin ? "Login" : "Sign Up"}
           </Button>
           <Flex
